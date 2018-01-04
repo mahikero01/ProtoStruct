@@ -12,14 +12,18 @@ namespace PC01.Controllers
     {
         public IActionResult Index()
         {
+            //Session
+            //redirect http:Pi01
             return View();
+            //return Redirect("http://localhost:62587/");
         }
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            //ViewData["Message"] = "Your application description page.";
 
-            return View();
+            //return View();
+            return Redirect("http://localhost:62587/");
         }
 
         public IActionResult Contact()

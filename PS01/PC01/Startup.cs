@@ -37,6 +37,8 @@ namespace PC01
                 app.UseExceptionHandler("/Home/Error");
             }
 
+           
+
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
