@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using PI01.Models;
@@ -16,6 +17,15 @@ namespace PI01.Controllers
     public class HomeController : Controller
     {
         private ILogger<HomeController> _logger;
+        private IConfiguration _config;
+
+        public HomeController(
+            ILogger<HomeController> logger,
+            IConfiguration config)
+        {
+            _logger = logger;
+            _config = config;
+        }
 
         public IActionResult Index()
         {
@@ -54,12 +64,12 @@ namespace PI01.Controllers
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("verulonfdlsjflsfksfjsjkfsjkfjkshflsflsjfl;ksjfioshfohslflkskflgkey"));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var token = new JwtSecurityToken(
-                    issuer: "http://mycodecamp.orf",
-                    audience: "http://mycodecamp.orf",
+                    issuer: _config["Tokens: Issuer"],
+                    audience: _config["Tokens:Audience"],
                     claims: claims,
                     expires: DateTime.UtcNow.AddMinutes(15),
                     signingCredentials:  creds
