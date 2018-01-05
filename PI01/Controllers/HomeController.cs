@@ -60,7 +60,8 @@ namespace PI01.Controllers
 
                 var claims = new[]
                 {
-                    new Claim(ClaimTypes.Name, user)
+                    new Claim(ClaimTypes.Name, user),
+                    new Claim(ClaimTypes.Actor, "CocoM")
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jjshfkhfkghbvcviutlnvunnksjknvkfjbkrtygbdfg545678566jdkhiufh"));
