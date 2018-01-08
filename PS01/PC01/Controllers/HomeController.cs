@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PC01.Models;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace PC01.Controllers
 {
@@ -114,7 +115,13 @@ namespace PC01.Controllers
         [HttpPost("api/auth/contoken")]
         public IActionResult ConsumeToken()
         {
-            return Ok("Api Acccess granted");
+            //System.Diagnostics.Debug.WriteLine(HttpContext.User.IsInRole("admin"));
+            var roles = ((ClaimsIdentity)User.Identity).Claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value).First();
+
+
+            return Ok("Api Acccess granted"+ roles);
         }
 
         [Authorize(Roles = "Admin")]
