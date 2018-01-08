@@ -41,9 +41,17 @@ namespace PC01.Controllers
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            await client.PostAsync("http://localhost:62477/api/auth/contoken", null);
+            var a = await client.PostAsync("http://localhost:62477/api/auth/contoken", null);
 
-            return Ok();
+            if (a.IsSuccessStatusCode)
+            {
+                System.Diagnostics.Debug.WriteLine(a.Content.ReadAsStringAsync().Result);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("not authenticated");
+            }
+            return Ok(a.Content.ReadAsStringAsync());
 
         }
 
@@ -95,7 +103,7 @@ namespace PC01.Controllers
 
         [Authorize]
         [HttpPost("api/auth/contoken")]
-        public async Task<IActionResult> ConsumeToken()
+        public IActionResult ConsumeToken()
         {
             return Ok("Api Acccess granted");
         }
