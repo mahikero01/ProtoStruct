@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PC01.Models;
 
@@ -18,17 +19,47 @@ namespace PC01.Controllers
         {
             //Session
             //redirect http:Pi01
+            var checkSession = HttpContext.Session.Get("myToken");
+            if (checkSession == null)
+            {
+                return Redirect("Home/About");
+            }
+
+
             return View();
-            
+
             //return Redirect("http://localhost:62587/");
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> About()
         {
-            //ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Redirecting...";
+
+
+            var client = new HttpClient();
+
+
+            //var b = await client.postasync()
+            var a = await client.GetAsync("http://localhost:62497/api/Redirect");
+            // var a = RedirectResult("http://localhost:62497/api/Redirect");
+
+            if (a.IsSuccessStatusCode)
+            {
+                //Storing the response details recieved from web api   
+                var EmpResponse = a.Content.ReadAsStringAsync().Result;
+
+                System.Diagnostics.Debug.WriteLine(EmpResponse);
+                HttpContext.Session.SetString("myToken", EmpResponse);
+
+                return Redirect("Index");
+            }
+
+
+
+            return View();
 
             //return View();
-            return Redirect("http://localhost:62587/");
+            //return Redirect("http://localhost:62587/");
         }
 
         public IActionResult Contact()
