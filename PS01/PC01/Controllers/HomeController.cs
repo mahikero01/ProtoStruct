@@ -40,7 +40,7 @@ namespace PC01.Controllers
 
 
             //var b = await client.postasync()
-            var a = await client.GetAsync("http://localhost:62497/api/Redirect");
+            var a = await client.PostAsync("http://localhost:56638/api/auth/token", null);
             // var a = RedirectResult("http://localhost:62497/api/Redirect");
 
             if (a.IsSuccessStatusCode)
@@ -51,7 +51,7 @@ namespace PC01.Controllers
                 System.Diagnostics.Debug.WriteLine(EmpResponse);
                 HttpContext.Session.SetString("myToken", EmpResponse);
 
-                return Redirect("Index");
+                //return Redirect("Index");
             }
 
 
