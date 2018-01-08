@@ -76,7 +76,7 @@ namespace PI02.Controllers
 
                 return Ok(new
                 {
-                    token = new JwtSecurityTokenHandler().WriteToken(token)
+                    Token = new JwtSecurityTokenHandler().WriteToken(token)
                 });
             }
             catch (Exception ex)

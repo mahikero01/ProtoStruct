@@ -10,26 +10,43 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PC01.Models;
+using Newtonsoft.Json;
 
 namespace PC01.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //Session
             //redirect http:Pi01
-            var checkSession = HttpContext.Session.Get("myToken");
+            var checkSession = HttpContext.Session.GetString("myToken");
             if (checkSession == null)
             {
                 return Redirect("Home/About");
             }
 
-
+            //AppToken a = new AppToken();
+            //a = checkSession;
+            //System.Diagnostics.Debug.WriteLine(a.Token);
+            await accessToken(checkSession);
             return View();
 
             //return Redirect("http://localhost:62587/");
         }
+
+
+        public async Task<IActionResult> accessToken(string token)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            await client.PostAsync("http://localhost:62477/api/auth/contoken", null);
+
+            return Ok();
+
+        }
+
 
         public async Task<IActionResult> About()
         {
@@ -46,10 +63,12 @@ namespace PC01.Controllers
             if (a.IsSuccessStatusCode)
             {
                 //Storing the response details recieved from web api   
-                var EmpResponse = a.Content.ReadAsStringAsync().Result;
+                var EmpResponse = JsonConvert.DeserializeObject<AppToken>(a.Content.ReadAsStringAsync().Result);
+
+
 
                 System.Diagnostics.Debug.WriteLine(EmpResponse);
-                HttpContext.Session.SetString("myToken", EmpResponse);
+                HttpContext.Session.SetString("myToken", EmpResponse.Token.ToString());
 
                 //return Redirect("Index");
             }
