@@ -21,9 +21,33 @@ namespace PC01.Controllers
     public class HomeController : Controller
     {
         private ILogger<HomeController> _logger;
+        private string _webApiToken = "";
 
         public async Task<IActionResult> Index()
         {
+
+            var user = "mahikero";
+
+            var claims = new[]
+            {
+                    new Claim(ClaimTypes.Name, user),
+                    new Claim(ClaimTypes.Actor, "CocoM")
+                };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("03fb1760-a45f-4473-bed4-aab1e8d7e87a"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: "http://localhost:60812",
+                audience: "http://localhost:60822",
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(30),
+                signingCredentials: creds
+                );
+
+
+            var myToken = new JwtSecurityTokenHandler().WriteToken(token);
+            _webApiToken = myToken;
             //Session
             //redirect http:Pi01
             //var checkSession = HttpContext.Session.GetString("myToken");
@@ -141,30 +165,33 @@ namespace PC01.Controllers
         {
             try
             {
-                var user = "mahikero";
 
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.Name, user),
-                    new Claim(ClaimTypes.Actor, "CocoM")
-                };
-
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("03fb1760-a45f-4473-bed4-aab1e8d7e87a"));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                var token = new JwtSecurityToken(
-                    issuer: "http://localhost:60812",
-                    audience: "http://localhost:60822",
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(30),
-                    signingCredentials: creds
-                    );
-
-
-                var myToken = new JwtSecurityTokenHandler().WriteToken(token);
-
+                System.Diagnostics.Debug.WriteLine("\n\n" + _webApiToken + "\n\n");
                 var client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", myToken);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _webApiToken);
+
+                var requestToWebApi = await client.GetAsync("http://localhost:60822/api/skills");
+
+
+                return Ok(requestToWebApi.Content.ReadAsStreamAsync().Result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exception thrown while creating JWT: {ex}");
+            }
+
+
+            return Ok();
+        }
+        [HttpGet("api/home/getSkills")]
+        public async Task<IActionResult> CreateSkillApi()
+        {
+            try
+            {
+
+                System.Diagnostics.Debug.WriteLine("\n\n" + _webApiToken + "\n\n");
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _webApiToken);
 
                 var requestToWebApi = await client.GetAsync("http://localhost:60822/api/skills");
 
