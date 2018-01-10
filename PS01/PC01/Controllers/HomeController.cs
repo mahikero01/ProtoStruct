@@ -153,8 +153,8 @@ namespace PC01.Controllers
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var token = new JwtSecurityToken(
-                    issuer: "http://localhost:62566",
-                    audience: "http://localhost:63843",
+                    issuer: "http://localhost:60812",
+                    audience: "http://localhost:60822",
                     claims: claims,
                     expires: DateTime.UtcNow.AddMinutes(30),
                     signingCredentials: creds
@@ -166,7 +166,7 @@ namespace PC01.Controllers
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", myToken);
 
-                var requestToWebApi = await client.GetAsync("http://localhost:63843/api/skills");
+                var requestToWebApi = await client.GetAsync("http://localhost:60822/api/skills");
 
 
                 return Ok(requestToWebApi.Content.ReadAsStreamAsync().Result);
