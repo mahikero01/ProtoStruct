@@ -12,25 +12,30 @@ using Microsoft.AspNetCore.Mvc;
 using PC01.Models;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Logging;
 
 namespace PC01.Controllers
 {
     public class HomeController : Controller
     {
+        private ILogger<HomeController> _logger;
+
         public async Task<IActionResult> Index()
         {
             //Session
             //redirect http:Pi01
-            var checkSession = HttpContext.Session.GetString("myToken");
-            if (checkSession == null)
-            {
-                return Redirect("Home/About");
-            }
+            //var checkSession = HttpContext.Session.GetString("myToken");
+            //if (checkSession == null)
+            //{
+            //    return Redirect("Home/About");
+            //}
 
             //AppToken a = new AppToken();
             //a = checkSession;
             //System.Diagnostics.Debug.WriteLine(a.Token);
-            await accessToken(checkSession);
+            //await accessToken(checkSession);
             return View();
 
             //return Redirect("http://localhost:62587/");
@@ -131,5 +136,48 @@ namespace PC01.Controllers
             return Ok("Api Acccess granted");
         }
 
+        //[Authorizationrole= admin]
+        public async Task<IActionResult> CreateSkill()
+        {
+            try
+            {
+                var user = "mahikero";
+
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.Name, user),
+                    new Claim(ClaimTypes.Actor, "CocoM")
+                };
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("03fb1760-a45f-4473-bed4-aab1e8d7e87a"));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                var token = new JwtSecurityToken(
+                    issuer: "http://localhost:62566",
+                    audience: "http://localhost:63843",
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddMinutes(30),
+                    signingCredentials: creds
+                    );
+
+
+                var myToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", myToken);
+
+                var requestToWebApi = await client.GetAsync("http://localhost:63843/api/skills");
+
+
+                return Ok(requestToWebApi.Content.ReadAsStreamAsync().Result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exception thrown while creating JWT: {ex}");
+            }
+
+
+            return Ok();
+        }
     }
 }
