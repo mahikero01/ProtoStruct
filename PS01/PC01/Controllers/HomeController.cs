@@ -20,6 +20,47 @@ namespace PC01.Controllers
 {
     public class HomeController : Controller
     {
+        //private SessionObject _session;
+        //privat token Authtoken _session;
+
+        public HomeController()
+        {
+            /*check session if empty or not
+            /if empty request to idp url then 
+            save JWT to _session
+
+            
+            */
+
+
+
+            //angular client will get _session value then append the value top the 
+            //Controller/action
+            //e .g. 
+
+
+            /*
+             * create token for WEB API consumption
+             
+             */
+        }
+
+
+
+
+        [Authorize (Roles = "admin")]
+        //http:doma:port/Home/CreateDepartment
+        public void CreateDepartment()
+        {
+
+
+
+            //http://pw01/api/department (httpPOST)
+            //http://pw01/api/person (httpPOST)
+
+
+        }
+
         private ILogger<HomeController> _logger;
         private string _webApiToken = "";
 
