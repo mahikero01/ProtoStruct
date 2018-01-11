@@ -11,25 +11,26 @@ namespace PC02.Controllers
 {
     public class HomeController : Controller
     {
-        private ISession _session;
         private string _authToken;
         private string _userToken;
 
         public HomeController()
         {
-            _authToken = _session.GetString("authToken");
-            _userToken = _session.GetString("userToken");
+
+            _authToken = HttpContext.Session.GetString("authToken");
+            _userToken = HttpContext.Session.GetString("userToken");
+        }
+
+        public IActionResult Index()
+        {
+            _authToken = HttpContext.Session.GetString("authToken");
+            _userToken = HttpContext.Session.GetString("userToken");
 
             if (_authToken == null)
             {
                 //get token for authentication
                 //change route to signIn
             }
-        }
-
-        public IActionResult Index()
-        {
-            
 
             return View();
         }
