@@ -23,7 +23,7 @@ namespace PW01
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -45,12 +45,12 @@ namespace PW01
 
             services.AddMvc();
 
-            var connectionString = @"Server=(localdb)\mssqllocaldb; Database=CityInfoDB; trusted_Connection=True";
+            var connectionString = Startup.Configuration["connectionStrings:cityInfoDBConnectionString"];
             services.AddDbContext<CityInfoContext>(o => o.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, CityInfoContext cityInfoContext)
         {
             app.UseAuthentication();
 
@@ -58,6 +58,8 @@ namespace PW01
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            cityInfoContext.EnsureSeedDataForContext();
 
             app.UseMvc();
         }
