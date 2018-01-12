@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Jsonp } from '@angular/http';
 import 'rxjs/Rx';
+import { headersToString } from 'selenium-webdriver/http';
 
 @Injectable()
 export class ApiService {
@@ -63,16 +64,20 @@ export class ApiService {
 @Injectable()
 export class ApiService1 {
     // private headers = new Headers({'Content-Type': 'application/json'});
-    private headers = new Headers({'Content-Type': 'application/json'});
+    private headers:Headers;
     private apiUrl = '';
 
     constructor(private http:Http){
-
+        
     }
 
     public  CURRENT_URL = "http://localhost:52292/api/"
 
     public  GETAPIURL(controller:string):string{
+        this.headers=new Headers
+        this.headers.append('authorization','Bearer '+localStorage.getItem('authToken'));
+        this.headers.append( 'Content-Type', 'application/json');
+        console.log('reset');
         return this.CURRENT_URL+controller;
     }
 
@@ -81,8 +86,7 @@ export class ApiService1 {
     // }
     public getAll(controller:string) {  
         this.apiUrl=this.GETAPIURL(controller);
-        console.log(localStorage.getItem('authToken'));
-        this.headers.append('authentication','Bearer '+localStorage.getItem('authToken'));
+        
         return this.http
             .get(this.apiUrl, {headers: this.headers})
     }
@@ -95,11 +99,10 @@ export class ApiService1 {
     }  
 
     public postData(controller:string,data:any){
-        console.log(localStorage.getItem('authToken'));
+        // console.log(localStorage.getItem('authToken'));
         this.apiUrl=this.GETAPIURL(controller);
-        this.headers.append('authentication','Bearer '+localStorage.getItem('authToken'));
         return this.http
-          .post(this.apiUrl, JSON.stringify(data), {headers: this.headers})
+          .post(this.apiUrl,1,  {headers: this.headers}).retry(3)
          
     }
 

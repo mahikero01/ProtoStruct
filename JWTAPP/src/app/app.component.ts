@@ -14,15 +14,23 @@ export class AppComponent {
   appToken:AppToken[]=[];
   rawdata:any=[];
   constructor(private appService:appService.ApiService,private api1:appService.ApiService1){
-    appService.getAll
+  
      //appService.getAll('getSkills').subscribe(data=>{ this.rawdata=data.json(); console.log(this.rawdata)} );
 
-    appService.getAll('myToken').map(res => this.appToken=<AppToken[]>res.json()).subscribe(data=>{console.log(data)});
-    localStorage.setItem('apiToken', this.appToken.pop().Token);
-    localStorage.setItem('authToken',this.appToken.pop().Token);
-    appService.getAll('skills').subscribe(data=> {console.log(data)});
-    appService.postData('skills',null).subscribe(data=> {console.log(data)});
-  
+   
+    
+    this.simulate();
+  }
+
+  public async simulate(){
+    await this.appService.getAll('myToken').toPromise().then(
+      res=>{ this.appToken=<AppToken[]>res.json();
+      console.log(this.appToken.length);
+    });
+    await localStorage.setItem('apiToken', this.appToken.find(x=>x.tokenName=='ApiToken').token);
+    await localStorage.setItem('authToken', this.appToken.find(x=>x.tokenName=='AuthToken').token);
+    await this.api1.getAll('skills').subscribe(data=> {console.log(data)});
+    await this.api1.postData('skills',null).subscribe(data=> {console.log(data)});
   }
 
 
