@@ -11,7 +11,9 @@ namespace PW01.Entities
         public CityInfoContext(DbContextOptions<CityInfoContext> options) : base(options)
         {
             //ensure the database is created
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
+            //migrate database
+            Database.Migrate();
         }
 
         public DbSet<City> Cities { get; set; }
