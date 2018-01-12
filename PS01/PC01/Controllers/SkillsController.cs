@@ -20,11 +20,11 @@ namespace PC01.Controllers
         }
         private HttpClient _client;
         // GET: api/Skills
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            //triggers api from webapi if authorized to use.
-        }
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    //triggers api from webapi if authorized to use.
+        //}
 
         // GET: api/Skills/5
         [HttpGet("{id}", Name = "Get")]

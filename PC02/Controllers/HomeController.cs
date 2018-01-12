@@ -15,7 +15,7 @@ using PC02.Models;
 
 namespace PC02.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : Controller 
     {
         private string _authToken;
         private string _apiToken;
@@ -101,7 +101,6 @@ namespace PC02.Controllers
             var myToken = new JwtSecurityTokenHandler().WriteToken(token);
 
             System.Diagnostics.Debug.WriteLine(myToken);
-
             HttpContext.Session.SetString("apiToken", myToken);
         }
 
