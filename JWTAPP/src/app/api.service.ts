@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Jsonp } from '@angular/http';
 import 'rxjs/Rx';
+import { headersToString } from 'selenium-webdriver/http';
 
 @Injectable()
 export class ApiService {
@@ -82,7 +83,7 @@ export class ApiService1 {
     public getAll(controller:string) {  
         this.apiUrl=this.GETAPIURL(controller);
         console.log(localStorage.getItem('authToken'));
-        this.headers.append('authentication','Bearer '+localStorage.getItem('authToken'));
+        this.headers.append('authorization','Bearer '+localStorage.getItem('authToken'));
         return this.http
             .get(this.apiUrl, {headers: this.headers})
     }
@@ -97,9 +98,12 @@ export class ApiService1 {
     public postData(controller:string,data:any){
         console.log(localStorage.getItem('authToken'));
         this.apiUrl=this.GETAPIURL(controller);
-        this.headers.append('authentication','Bearer '+localStorage.getItem('authToken'));
+        this.headers=new Headers();
+        this.headers.append( 'Content-Type', 'application/json');
+        //var a='Bearer '+localStorage.getItem('authToken');
+        this.headers.append('authorization','Bearer '+localStorage.getItem('authToken'));
         return this.http
-          .post(this.apiUrl, JSON.stringify(data), {headers: this.headers})
+          .post(this.apiUrl,1,  {headers: this.headers}).retry(3)
          
     }
 

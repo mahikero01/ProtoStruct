@@ -48,11 +48,11 @@ namespace PC02.Controllers
 
         // POST: api/Skills
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPost]
-        public IActionResult Post([FromBody]string value)
+        public string Post(int id)
         {
-            return Ok("you are admin that is why you are authorized to use this method");
+            return "you are admin that is why you are authorized to use this method";
         }
         
         // PUT: api/Skills/5
