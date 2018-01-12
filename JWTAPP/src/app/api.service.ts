@@ -79,28 +79,31 @@ export class ApiService1 {
     // getAll(){
     //     return this.http.get("http://mdsitools.com/projectworkplace/api/leaders").retry();
     // }
-    public getAll(controller:string,token:string) {  
+    public getAll(controller:string) {  
         this.apiUrl=this.GETAPIURL(controller);
-        this.headers.append('authentication','Bearer '+token);
+        console.log(localStorage.getItem('authToken'));
+        this.headers.append('authentication','Bearer '+localStorage.getItem('authToken'));
         return this.http
             .get(this.apiUrl, {headers: this.headers})
     }
 
-    public getOne(controller:string,id:string,token:string){
+    public getOne(controller:string,id:string){
         this.apiUrl=this.GETAPIURL(controller);
         const url = `${this.apiUrl}/${id}`;
         return this.http
             .get(url, {headers: this.headers})
     }  
 
-    public postData(controller:string,data:any,token:string){
+    public postData(controller:string,data:any){
+        console.log(localStorage.getItem('authToken'));
         this.apiUrl=this.GETAPIURL(controller);
+        this.headers.append('authentication','Bearer '+localStorage.getItem('authToken'));
         return this.http
           .post(this.apiUrl, JSON.stringify(data), {headers: this.headers})
          
     }
 
-    public putData(controller:string,data:any,id:string,token:string){
+    public putData(controller:string,data:any,id:string){
         this.apiUrl=this.GETAPIURL(controller);
         const url = `${this.apiUrl}/${id}`;
         return this.http

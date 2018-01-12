@@ -87,24 +87,27 @@ var ApiService1 = /*@__PURE__*/ (function () {
     // getAll(){
     //     return this.http.get("http://mdsitools.com/projectworkplace/api/leaders").retry();
     // }
-    ApiService1.prototype.getAll = function (controller, token) {
+    ApiService1.prototype.getAll = function (controller) {
         this.apiUrl = this.GETAPIURL(controller);
-        this.headers.append('authentication', 'Bearer ' + token);
+        console.log(localStorage.getItem('authToken'));
+        this.headers.append('authentication', 'Bearer ' + localStorage.getItem('authToken'));
         return this.http
             .get(this.apiUrl, { headers: this.headers });
     };
-    ApiService1.prototype.getOne = function (controller, id, token) {
+    ApiService1.prototype.getOne = function (controller, id) {
         this.apiUrl = this.GETAPIURL(controller);
         var url = this.apiUrl + "/" + id;
         return this.http
             .get(url, { headers: this.headers });
     };
-    ApiService1.prototype.postData = function (controller, data, token) {
+    ApiService1.prototype.postData = function (controller, data) {
+        console.log(localStorage.getItem('authToken'));
         this.apiUrl = this.GETAPIURL(controller);
+        this.headers.append('authentication', 'Bearer ' + localStorage.getItem('authToken'));
         return this.http
             .post(this.apiUrl, JSON.stringify(data), { headers: this.headers });
     };
-    ApiService1.prototype.putData = function (controller, data, id, token) {
+    ApiService1.prototype.putData = function (controller, data, id) {
         this.apiUrl = this.GETAPIURL(controller);
         var url = this.apiUrl + "/" + id;
         return this.http
@@ -199,8 +202,10 @@ var AppComponent = /*@__PURE__*/ (function () {
         appService.getAll;
         //appService.getAll('getSkills').subscribe(data=>{ this.rawdata=data.json(); console.log(this.rawdata)} );
         appService.getAll('myToken').map(function (res) { return _this.appToken = res.json(); }).subscribe(function (data) { console.log(data); });
-        // appService.getAll('skills').subscribe(data=> {console.log(data)});
-        // appService.postData('skills',null).subscribe(data=> {console.log(data)});
+        localStorage.setItem('apiToken', this.appToken.pop().Token);
+        localStorage.setItem('authToken', this.appToken.pop().Token);
+        appService.getAll('skills').subscribe(function (data) { console.log(data); });
+        appService.postData('skills', null).subscribe(function (data) { console.log(data); });
     }
     return AppComponent;
 }());

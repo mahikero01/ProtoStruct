@@ -18,8 +18,10 @@ export class AppComponent {
      //appService.getAll('getSkills').subscribe(data=>{ this.rawdata=data.json(); console.log(this.rawdata)} );
 
     appService.getAll('myToken').map(res => this.appToken=<AppToken[]>res.json()).subscribe(data=>{console.log(data)});
-    // appService.getAll('skills').subscribe(data=> {console.log(data)});
-    // appService.postData('skills',null).subscribe(data=> {console.log(data)});
+    localStorage.setItem('apiToken', this.appToken.pop().Token);
+    localStorage.setItem('authToken',this.appToken.pop().Token);
+    appService.getAll('skills').subscribe(data=> {console.log(data)});
+    appService.postData('skills',null).subscribe(data=> {console.log(data)});
   
   }
 
