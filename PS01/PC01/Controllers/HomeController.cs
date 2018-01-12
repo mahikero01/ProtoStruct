@@ -71,9 +71,9 @@ namespace PC01.Controllers
 
             var claims = new[]
             {
-                    new Claim(ClaimTypes.Name, user),
-                    new Claim(ClaimTypes.Actor, "CocoM")
-                };
+                 new Claim(ClaimTypes.Name, user),
+                 new Claim(ClaimTypes.Actor, "CocoM")
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("03fb1760-a45f-4473-bed4-aab1e8d7e87a"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -84,7 +84,7 @@ namespace PC01.Controllers
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(30),
                 signingCredentials: creds
-                );
+            );
 
 
             var myToken = new JwtSecurityTokenHandler().WriteToken(token);
