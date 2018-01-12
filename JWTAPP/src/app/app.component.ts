@@ -29,7 +29,7 @@ export class AppComponent {
     });
     await localStorage.setItem('apiToken', this.appToken.find(x=>x.tokenName=='ApiToken').token);
     await localStorage.setItem('authToken', this.appToken.find(x=>x.tokenName=='AuthToken').token);
-  //  await this.api1.getAll('skills').subscribe(data=> {console.log(data)});
+    await this.api1.getAll('skills').subscribe(data=> {console.log(data)});
     await this.api1.postData('skills',null).subscribe(data=> {console.log(data)});
   }
 

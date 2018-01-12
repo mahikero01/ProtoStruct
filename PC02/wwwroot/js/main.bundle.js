@@ -76,12 +76,14 @@ var ApiService = /*@__PURE__*/ (function () {
 var ApiService1 = /*@__PURE__*/ (function () {
     function ApiService1(http) {
         this.http = http;
-        // private headers = new Headers({'Content-Type': 'application/json'});
-        this.headers = new __WEBPACK_IMPORTED_MODULE_0__angular_http__["d" /* Headers */]({ 'Content-Type': 'application/json' });
         this.apiUrl = '';
         this.CURRENT_URL = "http://localhost:52292/api/";
     }
     ApiService1.prototype.GETAPIURL = function (controller) {
+        this.headers = new __WEBPACK_IMPORTED_MODULE_0__angular_http__["d" /* Headers */];
+        this.headers.append('authorization', 'Bearer ' + localStorage.getItem('authToken'));
+        this.headers.append('Content-Type', 'application/json');
+        console.log('reset');
         return this.CURRENT_URL + controller;
     };
     // getAll(){
@@ -89,8 +91,6 @@ var ApiService1 = /*@__PURE__*/ (function () {
     // }
     ApiService1.prototype.getAll = function (controller) {
         this.apiUrl = this.GETAPIURL(controller);
-        console.log(localStorage.getItem('authToken'));
-        this.headers.append('authorization', 'Bearer ' + localStorage.getItem('authToken'));
         return this.http
             .get(this.apiUrl, { headers: this.headers });
     };
@@ -101,12 +101,8 @@ var ApiService1 = /*@__PURE__*/ (function () {
             .get(url, { headers: this.headers });
     };
     ApiService1.prototype.postData = function (controller, data) {
-        console.log(localStorage.getItem('authToken'));
+        // console.log(localStorage.getItem('authToken'));
         this.apiUrl = this.GETAPIURL(controller);
-        this.headers = new __WEBPACK_IMPORTED_MODULE_0__angular_http__["d" /* Headers */]();
-        this.headers.append('Content-Type', 'application/json');
-        //var a='Bearer '+localStorage.getItem('authToken');
-        this.headers.append('authorization', 'Bearer ' + localStorage.getItem('authToken'));
         return this.http
             .post(this.apiUrl, 1, { headers: this.headers }).retry(3);
     };
@@ -308,10 +304,11 @@ var AppComponent = /*@__PURE__*/ (function () {
                         return [4 /*yield*/, localStorage.setItem('authToken', this.appToken.find(function (x) { return x.tokenName == 'AuthToken'; }).token)];
                     case 3:
                         _a.sent();
-                        //  await this.api1.getAll('skills').subscribe(data=> {console.log(data)});
-                        return [4 /*yield*/, this.api1.postData('skills', null).subscribe(function (data) { console.log(data); })];
+                        return [4 /*yield*/, this.api1.getAll('skills').subscribe(function (data) { console.log(data); })];
                     case 4:
-                        //  await this.api1.getAll('skills').subscribe(data=> {console.log(data)});
+                        _a.sent();
+                        return [4 /*yield*/, this.api1.postData('skills', null).subscribe(function (data) { console.log(data); })];
+                    case 5:
                         _a.sent();
                         return [2 /*return*/];
                 }
