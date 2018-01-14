@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PW01.Entities;
+using PW01.Services;
 
 namespace PW01
 {
@@ -47,6 +48,12 @@ namespace PW01
 
             var connectionString = Startup.Configuration["connectionStrings:cityInfoDBConnectionString"];
             services.AddDbContext<CityInfoContext>(o => o.UseSqlServer(connectionString));
+
+            //Kinds of Services
+            //1) Transient - service must be created every time they are requested
+            //2) Scoped - services that are created once per request
+            //3) Singleton - services that are created first time they are created
+            services.AddScoped<ICityInfoRepository, CityInfoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

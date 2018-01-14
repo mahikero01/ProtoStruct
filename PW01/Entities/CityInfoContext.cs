@@ -12,6 +12,7 @@ namespace PW01.Entities
         {
             //ensure the database is created
             //Database.EnsureCreated();
+
             //migrate database
             Database.Migrate();
         }
