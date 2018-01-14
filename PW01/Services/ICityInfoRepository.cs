@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace PW01.Services
 {
-    interface ICityInfoRepository
+    public interface ICityInfoRepository
     {
         IEnumerable<City> GetCities();
-        City GetCity(int cityId, bool includePointsofInterest);
+        bool CityExist(int cityId);
+        City GetCity(int cityId, bool includePointsOfInterest);
         IEnumerable<PointOfInterest> GetPointsOfInterestForCity(int cityId);
         PointOfInterest GetPointOfInterestForCity(int cityId, int pointOfInterestId);
     }

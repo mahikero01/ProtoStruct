@@ -16,14 +16,19 @@ namespace PW01.Services
             _context = context;
         }
 
+        public bool CityExist(int cityId)
+        {
+            return _context.Cities.Any(c => c.iD == cityId);
+        }
+
         public IEnumerable<City> GetCities()
         {
             return _context.Cities.OrderBy(c => c.Name).ToList();
         }
 
-        public City GetCity(int cityId, bool includePointsofInterest)
+        public City GetCity(int cityId, bool includePointsOfInterest)
         {
-            if (includePointsofInterest)
+            if (includePointsOfInterest)
             {
                 return _context.Cities.Include(c => c.PointsOfInterest)
                         .Where(c => c.iD == cityId).FirstOrDefault();
