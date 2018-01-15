@@ -32,7 +32,7 @@ namespace PC02.Controllers
         public IActionResult Index()
         {
             _authToken = HttpContext.Session.GetString("authToken");
-
+            var a = HttpContext.Session.Get("authToken");
             if (_authToken == null)
             {
                 //get token for authentication
@@ -41,6 +41,10 @@ namespace PC02.Controllers
                 //save to session
                 return Redirect("Home/SignIn");
             }
+
+            var identity = new ClaimsIdentity(HttpContext.User.Identity);
+            
+            //identity.AddClaim(new Claim);
             return View();
         }
 
