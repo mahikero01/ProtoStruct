@@ -122,8 +122,7 @@ namespace PC02.Controllers
 
 
             var myToken = new JwtSecurityTokenHandler().WriteToken(token);
-
-            System.Diagnostics.Debug.WriteLine(myToken);
+            JwtSecurityToken ax = new JwtSecurityToken();
             HttpContext.Session.SetString("apiToken", myToken);
         }
 
