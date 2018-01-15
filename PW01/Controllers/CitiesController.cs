@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PW01.Models;
@@ -25,19 +26,7 @@ namespace PW01.Controllers
         public IActionResult GetCities()
         {
             var cityEntities = _cityInfoRepository.GetCities();
-            var results = new List<CityWithoutPointsOfInterestDTO>();
-
-            foreach (var cityEntity in cityEntities)
-            {
-                results.Add(
-                        new CityWithoutPointsOfInterestDTO
-                        {
-                            Id = cityEntity.iD,
-                            Description = cityEntity.Description,
-                            Name = cityEntity.Name
-                        });
-            };
-            //var results = Mapper.Map<IEnumerable<CityWithoutPointsOfInterestDTO>>(cityEntities);
+            var results = Mapper.Map<IEnumerable<CityWithoutPointsOfInterestDTO>>(cityEntities);
 
             return Ok(results);
         }
@@ -56,36 +45,14 @@ namespace PW01.Controllers
 
             if (includePointsOfInterest)
             {
-                var cityResult = new CityDTO()
-                {
-                    Id = city.iD,
-                    Description = city.Description,
-                    Name = city.Name
-                };
-
-                foreach (var poi in  city.PointsOfInterest)
-                {
-                    cityResult.PointsOfInterest.Add(
-                            new PointOfInterestDTO()
-                            {
-                                Id = poi.Id,
-                                Name = poi.Name,
-                                Description = poi.Deescription
-                            });
-                }
+                var cityResult = Mapper.Map<CityDTO>(city);
 
                 return Ok(cityResult);
 
             }
 
-            var cityWithoutPointsOfInterestResult =
-                    new CityWithoutPointsOfInterestDTO()
-                    {
-                        Id = city.iD,
-                        Name = city.Name,
-                        Description = city.Description
-                    };
-
+            var cityWithoutPointsOfInterestResult = Mapper.Map<CityWithoutPointsOfInterestDTO>(city);
+                    
             return Ok(cityWithoutPointsOfInterestResult);
         }
 

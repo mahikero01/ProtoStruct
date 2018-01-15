@@ -44,7 +44,7 @@ namespace PW01.Migrations
 
                     b.Property<int>("CityId");
 
-                    b.Property<string>("Deescription")
+                    b.Property<string>("Description")
                         .HasMaxLength(200);
 
                     b.Property<string>("Name")

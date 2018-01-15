@@ -25,11 +25,11 @@ namespace PW01.Entities
                      {
                          new PointOfInterest() {
                              Name = "Central Park",
-                             Deescription = "The most visited urban park in the United States."
+                             Description = "The most visited urban park in the United States."
                          },
                           new PointOfInterest() {
                              Name = "Empire State Building",
-                             Deescription = "A 102-story skyscraper located in Midtown Manhattan."
+                             Description = "A 102-story skyscraper located in Midtown Manhattan."
                           },
                      }
                 },
@@ -41,11 +41,11 @@ namespace PW01.Entities
                      {
                          new PointOfInterest() {
                              Name = "Cathedral",
-                             Deescription = "A Gothic style cathedral, conceived by architects Jan and Pieter Appelmans."
+                             Description = "A Gothic style cathedral, conceived by architects Jan and Pieter Appelmans."
                          },
                           new PointOfInterest() {
                              Name = "Antwerp Central Station",
-                             Deescription = "The the finest example of railway architecture in Belgium."
+                             Description = "The the finest example of railway architecture in Belgium."
                           },
                      }
                 },
@@ -57,11 +57,11 @@ namespace PW01.Entities
                      {
                          new PointOfInterest() {
                              Name = "Eiffel Tower",
-                             Deescription =  "A wrought iron lattice tower on the Champ de Mars, named after engineer Gustave Eiffel."
+                             Description =  "A wrought iron lattice tower on the Champ de Mars, named after engineer Gustave Eiffel."
                          },
                           new PointOfInterest() {
                              Name = "The Louvre",
-                             Deescription = "The world's largest museum."
+                             Description = "The world's largest museum."
                           },
                      }
                 }

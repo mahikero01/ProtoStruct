@@ -45,7 +45,7 @@ namespace PW01
             });
 
             services.AddMvc();
-
+            //var connectionString = @"Server(localdb)\\mssqllocaldb; Database = CityInfoDB; trusted_Connection = True ";
             var connectionString = Startup.Configuration["connectionStrings:cityInfoDBConnectionString"];
             services.AddDbContext<CityInfoContext>(o => o.UseSqlServer(connectionString));
 
@@ -67,6 +67,14 @@ namespace PW01
             }
 
             cityInfoContext.EnsureSeedDataForContext();
+
+            //must download "AutoMapper" from Nuget before you can do this configuration
+            AutoMapper.Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<Entities.City, Models.CityWithoutPointsOfInterestDTO>();
+                        cfg.CreateMap<Entities.City, Models.CityDTO>();
+                        cfg.CreateMap<Entities.PointOfInterest, Models.PointOfInterestDTO>();
+                    });
 
             app.UseMvc();
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PW01.Models;
@@ -30,18 +31,7 @@ namespace PW01.Controllers
             }
 
             var pointsOfInterestForCity = _cityInfoRepository.GetPointsOfInterestForCity(cityId);
-            var pointsOfInterestForCityResults = new List<PointOfInterestDTO>();
-
-            foreach (var poi in pointsOfInterestForCity)
-            {
-                pointsOfInterestForCityResults.Add(
-                        new PointOfInterestDTO()
-                        {
-                            Id = poi.Id,
-                            Name = poi.Name,
-                            Description = poi.Deescription
-                        });
-            }
+            var pointsOfInterestForCityResults = Mapper.Map<IEnumerable<PointOfInterestDTO>>(pointsOfInterestForCity);
 
             return Ok(pointsOfInterestForCityResults);
         }
@@ -62,7 +52,9 @@ namespace PW01.Controllers
                 return NotFound();
             }
 
-            return Ok(pointOfInterest);
+            var pointOfInterestResult = Mapper.Map<PointOfInterestDTO>(pointOfInterest);
+
+            return Ok(pointOfInterestResult);
         }
 
  

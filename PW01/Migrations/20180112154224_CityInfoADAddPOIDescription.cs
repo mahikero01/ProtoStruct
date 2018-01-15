@@ -9,7 +9,7 @@ namespace PW01.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Deescription",
+                name: "Description",
                 table: "PointsOfInterest",
                 maxLength: 200,
                 nullable: true);
@@ -18,7 +18,7 @@ namespace PW01.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Deescription",
+                name: "Description",
                 table: "PointsOfInterest");
         }
     }

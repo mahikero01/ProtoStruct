@@ -18,7 +18,7 @@ namespace PW01.Entities
         public string Name { get; set; }
 
         [MaxLength(200)]
-        public string Deescription { get; set; }
+        public string Description { get; set; }
 
         [ForeignKey("CityId")]
         public City City { get; set; }
