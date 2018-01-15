@@ -16,7 +16,7 @@ namespace PC02
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -30,9 +30,9 @@ namespace PC02
                    ValidateAudience = true,
                    ValidateLifetime = true,
                    ValidateIssuerSigningKey = true,
-                   ValidIssuer = "http://mycodecamp.orf",
-                   ValidAudience = "http://mycodecamp.orf",
-                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jjshfkhfkghbvcviutlnvunnksjknvkfjbkrtygbdfg545678566jdkhiufh")),
+                   ValidIssuer = this.Configuration["JWTBearer:ValidIssuer"],
+                   ValidAudience = this.Configuration["JWTBearer:ValidAudience"],
+                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["JWTBearer:IssuerSigningKey"])),
 
                };
            });
