@@ -74,6 +74,7 @@ namespace PW01
                         cfg.CreateMap<Entities.City, Models.CityWithoutPointsOfInterestDTO>();
                         cfg.CreateMap<Entities.City, Models.CityDTO>();
                         cfg.CreateMap<Entities.PointOfInterest, Models.PointOfInterestDTO>();
+                        cfg.CreateMap<Models.PointsOfInterestForCreationDTO, Entities.PointOfInterest>();
                     });
 
             app.UseMvc();

@@ -37,8 +37,8 @@ namespace PW01.Controllers
         }
 
         // GET: api/cities/{id}/PointsOfInterest/{id}
-        [HttpGet("{cityId}/pointsofinterest/{id}")]
-        public IActionResult GetPointsOfInterest(int cityId, int id)
+        [HttpGet("{cityId}/pointsofinterest/{id}", Name = "GetPointOfInterest")]
+        public IActionResult GetPointOfInterest(int cityId, int id)
         {
             if (!_cityInfoRepository.CityExist(cityId))
             {
@@ -57,14 +57,48 @@ namespace PW01.Controllers
             return Ok(pointOfInterestResult);
         }
 
- 
-        
+
+
         // POST: api/PointsOfInterest
-        [HttpPost]
-        public void Post([FromBody]string value)
+        [HttpPost("{cityId}/pointsofinterest")]
+        public IActionResult CreatePointOfInterest(int cityId,
+                [FromBody] PointsOfInterestForCreationDTO pointOfInterest)
         {
+            if (pointOfInterest == null)
+            {
+                return BadRequest();
+            }
+
+            if (pointOfInterest.Description == pointOfInterest.Name)
+            {
+                ModelState.AddModelError("Description", "The provided description should be different from name.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_cityInfoRepository.CityExist(cityId))
+            {
+                return NotFound();
+            }
+
+            var finalPointOfInterest = Mapper.Map<Entities.PointOfInterest>(pointOfInterest);
+
+            _cityInfoRepository.AddPointOfInterestForCity(cityId, finalPointOfInterest);
+
+            if (!_cityInfoRepository.Save())
+            {
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+
+            var createdPointOfInterestToReturn = Mapper.Map<Models.PointOfInterestDTO>(finalPointOfInterest);
+
+            return CreatedAtRoute("GetPointOfInterest",
+                    new { cityId = cityId, id = createdPointOfInterestToReturn.Id }, createdPointOfInterestToReturn);
         }
-        
+
         // PUT: api/PointsOfInterest/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
