@@ -64,12 +64,12 @@ namespace PI02.Controllers
                     new Claim(ClaimTypes.Role,"Admin")
                 };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jjshfkhfkghbvcviutlnvunnksjknvkfjbkrtygbdfg545678566jdkhiufh"));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Startup.Configuration["JWTBearer:IssuerSigningKey"]));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var token = new JwtSecurityToken(
-                    issuer: "http://mycodecamp.orf",
-                    audience: "http://mycodecamp.orf",
+                    issuer: Startup.Configuration["JWTBearer:ValidIssuer"],
+                    audience: Startup.Configuration["JWTBearer:ValidAudience"],
                     claims: claims,
                     expires: DateTime.UtcNow.AddMinutes(30),
                     signingCredentials: creds
