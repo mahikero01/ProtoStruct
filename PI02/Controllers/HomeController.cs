@@ -55,7 +55,7 @@ namespace PI02.Controllers
         {
             try
             {
-                var user = "mahikero";
+                var user =Environment.UserName;
 
                 var claims = new[]
                 {

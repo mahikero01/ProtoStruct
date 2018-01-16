@@ -43,27 +43,27 @@ namespace PC02.Controllers
             }
 
             // test only
-            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jjshfkhfkghbvcviutlnvunnksjknvkfjbkrtygbdfg545678566jdkhiufh"));
-            //SecurityToken validatedToken;
-            //var tokenHandler = new JwtSecurityTokenHandler();
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jjshfkhfkghbvcviutlnvunnksjknvkfjbkrtygbdfg545678566jdkhiufh"));
+            SecurityToken validatedToken;
+            var tokenHandler = new JwtSecurityTokenHandler();
 
-            //var tokenValidationParameters = new TokenValidationParameters()
-            //{
-            //    ValidAudiences = new string[]
-            //    {   "http://mycodecamp.orf"
-            //    },
-            //    ValidIssuers = new string[]
-            //    {
-            //        "http://mycodecamp.orf"
-            //    },
-            //    IssuerSigningKey = key
+            var tokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidAudiences = new string[]
+                {   "http://mycodecamp.orf"
+                },
+                ValidIssuers = new string[]
+                {
+                    "http://mycodecamp.orf"
+                },
+                IssuerSigningKey = key
 
-            //};
-            //tokenHandler.ValidateToken(_authToken, tokenValidationParameters, out validatedToken);
-            ////identity.AddClaim(new Claim);
-            //System.Diagnostics.Debug.WriteLine(validatedToken.ToString());
-            //var identity = new ClaimsIdentity(HttpContext.User.Identity);
-            
+            };
+            tokenHandler.ValidateToken(_authToken, tokenValidationParameters, out validatedToken);
+            //identity.AddClaim(new Claim);
+            System.Diagnostics.Debug.WriteLine(validatedToken.ToString());
+            var identity = new ClaimsIdentity(HttpContext.User.Identity);
+
             return View();
         }
 
