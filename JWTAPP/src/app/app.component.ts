@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AppToken } from './apptoken';
 import * as appService from './api.service';
+import { AppSettings } from './app.settings';
 import 'rxjs/add/operator/toPromise';
 @Component({
   selector: 'app-root',
@@ -13,13 +14,20 @@ export class AppComponent {
   title = 'app';
   appToken:AppToken[]=[];
   rawdata:any=[];
-  constructor(private appService:appService.ApiService,private api1:appService.ApiService1){
+  constructor(private appService:appService.ApiService,
+    private appsettings : AppSettings,
+    private api1:appService.ApiService1){
   
      //appService.getAll('getSkills').subscribe(data=>{ this.rawdata=data.json(); console.log(this.rawdata)} );
 
    
     
-    this.simulate();
+    //this.simulate();
+    this.getJsonFile();
+  }
+
+  getJsonFile(){
+    this.appsettings.simulate();
   }
 
   public async simulate(){

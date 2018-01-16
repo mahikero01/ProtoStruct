@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, URLSearchParams, Jsonp } from '@angular/http';
 import 'rxjs/Rx';
-import { headersToString } from 'selenium-webdriver/http';
 
 @Injectable()
 export class ApiService {

@@ -31,19 +31,19 @@ namespace PI02.Controllers
             return View();
         }
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
+        //public IActionResult About()
+        //{
+        //    ViewData["Message"] = "Your application description page.";
 
-            return View();
-        }
+        //    return View();
+        //}
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
+        //public IActionResult Contact()
+        //{
+        //    ViewData["Message"] = "Your contact page.";
 
-            return View();
-        }
+        //    return View();
+        //}
 
         public IActionResult Error()
         {
@@ -64,7 +64,7 @@ namespace PI02.Controllers
                     new Claim(ClaimTypes.Role,"Admin")
                 };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Startup.Configuration["JWTBearer:IssuerSigningKey"]));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWTBearer:IssuerSigningKey"]));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var token = new JwtSecurityToken(
