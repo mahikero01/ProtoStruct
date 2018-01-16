@@ -100,11 +100,48 @@ namespace PW01.Controllers
         }
 
         // PUT: api/PointsOfInterest/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut("{cityId}/pointsofinterest/{id}")]
+        public IActionResult UpdatePointOfInterest(int cityId, int id,
+                [FromBody] PointsOfInterestForCreationDTO pointOfInterest)
         {
+            if (pointOfInterest == null)
+            {
+                return BadRequest();
+            }
+
+            if (pointOfInterest.Description == pointOfInterest.Name)
+            {
+                ModelState.AddModelError("Description", "The provided description should be different from name.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_cityInfoRepository.CityExist(cityId))
+            {
+                return NotFound();
+            }
+
+            var pointOfInterestEntity = _cityInfoRepository.GetPointOfInterestForCity(cityId, id);
+
+            if (pointOfInterestEntity == null)
+            {
+                return NotFound();
+            }
+
+            Mapper.Map(pointOfInterest, pointOfInterestEntity);
+
+            if (!_cityInfoRepository.Save())
+            {
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+
+            return NoContent();
         }
-        
+
+
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
