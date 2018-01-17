@@ -59,11 +59,30 @@ namespace PC02.Controllers
                 IssuerSigningKey = key
 
             };
-            tokenHandler.ValidateToken(_authToken, tokenValidationParameters, out validatedToken);
+            var claimsPrincipal = tokenHandler.ValidateToken(_authToken, tokenValidationParameters, out validatedToken);
+            var asd = claimsPrincipal.Identity as ClaimsIdentity;
             //identity.AddClaim(new Claim);
             System.Diagnostics.Debug.WriteLine(validatedToken.ToString());
-            var identity = new ClaimsIdentity(HttpContext.User.Identity);
+            System.Diagnostics.Debug.WriteLine(asd);
+            System.Diagnostics.Debug.WriteLine(validatedToken.Id);
+            var jwtToken = new JwtSecurityToken(_authToken);
+            System.Diagnostics.Debug.WriteLine(jwtToken.ToString());
+            //var identity = new ClaimsIdentity(HttpContext.User.Identity);
+            System.Diagnostics.Debug.WriteLine(jwtToken.Claims.ToString());
+            var name = jwtToken.Claims
+                .Where(x => x.Type == ClaimTypes.Role 
+                    || x.Type == ClaimTypes.Name
+                    || x.Type == ClaimTypes.Actor).Select(x=>x.Value);
 
+            foreach(var xz in name)
+            {
+                System.Diagnostics.Debug.WriteLine(xz);
+            }
+
+            //foreach(var xz in name)
+            //    System.Diagnostics.Debug.WriteLine(xz.type + " " + xz.value );
+            
+           
             return View();
         }
 
