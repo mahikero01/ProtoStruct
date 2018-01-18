@@ -40,11 +40,11 @@ namespace PW01.Controllers
             System.Diagnostics.Debug.WriteLine(skillset);
         }
 
-        [HttpPut("{id}")]
-        public void Put(string id,[FromBody]SS_Skillsets skillset)
+        [HttpDelete("{id}")]
+        public void Delete(string id)
         {
             System.Diagnostics.Debug.WriteLine(id);
-            System.Diagnostics.Debug.WriteLine(skillset.SkillsetDescr);
+         //   System.Diagnostics.Debug.WriteLine(skillset.SkillsetDescr);
         }
 
 
