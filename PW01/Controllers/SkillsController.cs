@@ -39,6 +39,15 @@ namespace PW01.Controllers
         {
             System.Diagnostics.Debug.WriteLine(skillset);
         }
+
+        [HttpPut("{id}")]
+        public void Put(string id,[FromBody]SS_Skillsets skillset)
+        {
+            System.Diagnostics.Debug.WriteLine(id);
+            System.Diagnostics.Debug.WriteLine(skillset.SkillsetDescr);
+        }
+
+
     }
     public class SS_Skillsets
     {
