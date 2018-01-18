@@ -38,8 +38,8 @@ namespace PW01
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "http://localhost:60812",
-                    ValidAudience = "http://localhost:60822",
+                    ValidIssuer = "http://mycodecamp.orf",
+                    ValidAudience = "http://mycodecamp.orf",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("03fb1760-a45f-4473-bed4-aab1e8d7e87a")),
                 };
             });
